@@ -51,14 +51,14 @@ jobs:
       - name: run build-image script
         env:
           IMAGE_REGISTRY:  ghcr.io
-          REGISTRY_NAMESPACE: dsedg/lvms_dev
-          IMAGE_TAG: 4.20
+          REGISTRY_NAMESPACE: 'dsedg/lvms_dev'
+          IMAGE_TAG: '4.20'
         run: |
-          make docker-build docker-push
+          make docker-build docker-push bundle bundle-push catalog catalog-build catalog-push
       - name: run build-image script
         env:
           IMAGE_REGISTRY: quay.io
           REGISTRY_NAMESPACE: ${{ github.repository_owner }}
-          IMAGE_TAG: 4.20
+          IMAGE_TAG: '4.20'
         run: |
-          make docker-build docker-push
+          make docker-build docker-push bundle bundle-push catalog catalog-build catalog-push
