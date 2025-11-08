@@ -51,7 +51,7 @@ jobs:
       - name: run build-image script
         env:
           IMAGE_REGISTRY:  ghcr.io
-          REGISTRY_NAMESPACE: ${{ github.repository_owner }}
+          REGISTRY_NAMESPACE: dsedg
           IMAGE_TAG: '4.20'
         run: |
           make docker-build docker-push bundle bundle-push catalog catalog-build catalog-push
