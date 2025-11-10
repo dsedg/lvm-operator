@@ -11,7 +11,7 @@ jobs:
     name: build containers
     runs-on: ubuntu-24.04
     steps:   
-      - name: Set up Podman, OpenShift CLI, and Skopeo
+      - name: Set up Podman, OpenShift CLI, and Skopeo yq
         run: |
           echo "Installing"
           sudo apt-get update
@@ -58,13 +58,12 @@ jobs:
           IMG=$IMAGE_REPO:$IMAGE_TAG
           MUST_GATHER_IMG=$IMAGE_REGISTRY/$REGISTRY_NAMESPACE/lvms-must-gather:$IMAGE_TAG
           make build docker-build docker-push rename-csv bundle-base
-          cat >> "bundle/manifests/lvms-operator.clusterserviceversion.yaml" << EOF
-            relatedImages:
-            - image: $IMG
-              name: lvms-operator
-            - image: $LVM_MUST_GATHER
-              name: lvms-must-gather
-          EOF                   
+          yq -i '
+          .spec.relatedImages[0].image = strenv(IMG) |
+          .spec.relatedImages[0].name = "lvms-operator |
+          .spec.relatedImages[1].image = strenv(LVM_MUST_GATHER) |
+          .spec.relatedImages[0].image = "lvms-must-gather"
+          ' bundle/manifests/lvms-operator.clusterserviceversion.yaml 
           sed -i "s|quay.io/lvms_dev/lvms-operator:.*\$|$IMG|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
           sed -i "s|quay.io/lvms_dev/lvms-must-gather:.*\$|$LVM_MUST_GATHER|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
           make bundle-build bundle-push catalog catalog-build catalog-push
@@ -78,13 +77,12 @@ jobs:
           IMG=$IMAGE_REPO:$IMAGE_TAG
           MUST_GATHER_IMG=$IMAGE_REGISTRY/$REGISTRY_NAMESPACE/lvms-must-gather:$IMAGE_TAG
           make build docker-build docker-push rename-csv bundle-base
-          cat >> "bundle/manifests/lvms-operator.clusterserviceversion.yaml" << EOF
-            relatedImages:
-            - image: $IMG
-              name: lvms-operator
-            - image: $LVM_MUST_GATHER
-              name: lvms-must-gather
-          EOF                   
+          yq -i '
+          .spec.relatedImages[0].image = strenv(IMG) |
+          .spec.relatedImages[0].name = "lvms-operator |
+          .spec.relatedImages[1].image = strenv(LVM_MUST_GATHER) |
+          .spec.relatedImages[0].image = "lvms-must-gather"
+          ' bundle/manifests/lvms-operator.clusterserviceversion.yaml           
           sed -i "s|quay.io/lvms_dev/lvms-operator:.*\$|$IMG|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
           sed -i "s|quay.io/lvms_dev/lvms-must-gather:.*\$|$LVM_MUST_GATHER|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
           make bundle-build bundle-push catalog catalog-build catalog-push
