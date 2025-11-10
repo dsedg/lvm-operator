@@ -62,7 +62,7 @@ jobs:
           .spec.relatedImages[0].image = strenv(IMG) |
           .spec.relatedImages[0].name = "lvms-operator |
           .spec.relatedImages[1].image = strenv(LVM_MUST_GATHER) |
-          .spec.relatedImages[0].image = "lvms-must-gather"
+          .spec.relatedImages[1].name = "lvms-must-gather"
           ' bundle/manifests/lvms-operator.clusterserviceversion.yaml 
           sed -i "s|quay.io/lvms_dev/lvms-operator:.*\$|$IMG|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
           sed -i "s|quay.io/lvms_dev/lvms-must-gather:.*\$|$LVM_MUST_GATHER|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
@@ -81,7 +81,7 @@ jobs:
           .spec.relatedImages[0].image = strenv(IMG) |
           .spec.relatedImages[0].name = "lvms-operator |
           .spec.relatedImages[1].image = strenv(LVM_MUST_GATHER) |
-          .spec.relatedImages[0].image = "lvms-must-gather"
+          .spec.relatedImages[1].name = "lvms-must-gather"
           ' bundle/manifests/lvms-operator.clusterserviceversion.yaml           
           sed -i "s|quay.io/lvms_dev/lvms-operator:.*\$|$IMG|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
           sed -i "s|quay.io/lvms_dev/lvms-must-gather:.*\$|$LVM_MUST_GATHER|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
