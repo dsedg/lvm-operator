@@ -64,10 +64,10 @@ jobs:
               name: lvms-operator
             - image: $LVM_MUST_GATHER
               name: lvms-must-gather
-           EOF                   
-           sed -i "s|quay.io/lvms_dev/lvms-operator:.*\$|$IMG|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
-           sed -i "s|quay.io/lvms_dev/lvms-must-gather:.*\$|$LVM_MUST_GATHER|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
-           make bundle-build bundle-push catalog catalog-build catalog-push
+          EOF                   
+          sed -i "s|quay.io/lvms_dev/lvms-operator:.*\$|$IMG|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
+          sed -i "s|quay.io/lvms_dev/lvms-must-gather:.*\$|$LVM_MUST_GATHER|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
+          make bundle-build bundle-push catalog catalog-build catalog-push
       - name: run build-image script
         env:
           IMAGE_REGISTRY: quay.io
@@ -84,7 +84,7 @@ jobs:
               name: lvms-operator
             - image: $LVM_MUST_GATHER
               name: lvms-must-gather
-           EOF                   
-           sed -i "s|quay.io/lvms_dev/lvms-operator:.*\$|$IMG|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
-           sed -i "s|quay.io/lvms_dev/lvms-must-gather:.*\$|$LVM_MUST_GATHER|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
-           make bundle-build bundle-push catalog catalog-build catalog-push
+          EOF                   
+          sed -i "s|quay.io/lvms_dev/lvms-operator:.*\$|$IMG|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
+          sed -i "s|quay.io/lvms_dev/lvms-must-gather:.*\$|$LVM_MUST_GATHER|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
+          make bundle-build bundle-push catalog catalog-build catalog-push
