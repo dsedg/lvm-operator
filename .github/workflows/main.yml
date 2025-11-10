@@ -54,6 +54,9 @@ jobs:
           REGISTRY_NAMESPACE: ${{ github.repository_owner }}"/lvms_dev"
           IMAGE_TAG: '4.20'
         run: |
+          IMAGE_REPO=$IMAGE_REGISTRY/$REGISTRY_NAMESPACE/lvms-operator
+          IMG=$IMAGE_REPO:$IMAGE_TAG
+          MUST_GATHER_IMG=$IMAGE_REGISTRY/$REGISTRY_NAMESPACE/lvms-must-gather:$IMAGE_TAG
           make build docker-build docker-push rename-csv bundle-base
           cat >> "bundle/manifests/lvms-operator.clusterserviceversion.yaml" << EOF
             relatedImages:
@@ -71,4 +74,17 @@ jobs:
           REGISTRY_NAMESPACE: 'dsedg/lvms_dev' 
           IMAGE_TAG: '4.20'
         run: |
-          make docker-build docker-push bundle bundle-build bundle-push catalog catalog-build catalog-push
+          IMAGE_REPO=$IMAGE_REGISTRY/$REGISTRY_NAMESPACE/lvms-operator
+          IMG=$IMAGE_REPO:$IMAGE_TAG
+          MUST_GATHER_IMG=$IMAGE_REGISTRY/$REGISTRY_NAMESPACE/lvms-must-gather:$IMAGE_TAG
+          make build docker-build docker-push rename-csv bundle-base
+          cat >> "bundle/manifests/lvms-operator.clusterserviceversion.yaml" << EOF
+            relatedImages:
+            - image: $IMG
+              name: lvms-operator
+            - image: $LVM_MUST_GATHER
+              name: lvms-must-gather
+           EOF                   
+           sed -i "s|quay.io/lvms_dev/lvms-operator:.*\$|$IMG|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
+           sed -i "s|quay.io/lvms_dev/lvms-must-gather:.*\$|$LVM_MUST_GATHER|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
+           make bundle-build bundle-push catalog catalog-build catalog-push
