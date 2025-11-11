@@ -58,7 +58,7 @@ jobs:
           export IMG=$IMAGE_REPO:$IMAGE_TAG
           MUST_GATHER_IMG=$IMAGE_REGISTRY/$REGISTRY_NAMESPACE/lvms-must-gather:$IMAGE_TAG
           make build docker-build docker-push rename-csv bundle-base
-          yq -v -i '
+          IMG=$IMAGE_REPO:$IMAGE_TAG MUST_GATHER_IMG=$IMAGE_REGISTRY/$REGISTRY_NAMESPACE/lvms-must-gather:$IMAGE_TAG yq -i '
           .spec.relatedImages[0].image = strenv(IMG) |
           .spec.relatedImages[0].name = "lvms-operator" |
           .spec.relatedImages[1].image = strenv(LVM_MUST_GATHER) |
@@ -81,7 +81,7 @@ jobs:
           IMG=$IMAGE_REPO:$IMAGE_TAG
           MUST_GATHER_IMG=$IMAGE_REGISTRY/$REGISTRY_NAMESPACE/lvms-must-gather:$IMAGE_TAG
           make build docker-build docker-push rename-csv bundle-base
-          yq -i '
+          IMG=$IMAGE_REPO:$IMAGE_TAG MUST_GATHER_IMG=$IMAGE_REGISTRY/$REGISTRY_NAMESPACE/lvms-must-gather:$IMAGE_TAG yq -i '
           .spec.relatedImages[0].image = strenv(IMG) |
           .spec.relatedImages[0].name = "lvms-operator" |
           .spec.relatedImages[1].image = strenv(LVM_MUST_GATHER) |
