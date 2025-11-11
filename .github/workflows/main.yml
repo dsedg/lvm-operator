@@ -60,12 +60,16 @@ jobs:
           make build docker-build docker-push rename-csv bundle-base
           yq -i '
           .spec.relatedImages[0].image = strenv(IMG) |
-          .spec.relatedImages[0].name = "lvms-operator |
+          .spec.relatedImages[0].name = "lvms-operator" |
           .spec.relatedImages[1].image = strenv(LVM_MUST_GATHER) |
-          .spec.relatedImages[1].name = "lvms-must-gather"
-          ' bundle/manifests/lvms-operator.clusterserviceversion.yaml 
-          sed -i "s|quay.io/lvms_dev/lvms-operator:.*\$|$IMG|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
-          sed -i "s|quay.io/lvms_dev/lvms-must-gather:.*\$|$LVM_MUST_GATHER|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
+          .spec.relatedImages[1].name = "lvms-must-gather" |
+          .metadata.annotations.containerImage = strenv(IMG) |
+          .metadata.annotations.repository = "https://github.com/dsedg/lvm-operator" |
+          .spec.links[0].url = "https://github.com/dsedg/lvm-operator" |
+          .spec.maintainers[0].name = "dsedg" |
+          .spec.maintainers[0].email = "dsedg@users.noreply.github.com" |
+          .spec.provider.name = "dsedg"
+          ' bundle/manifests/lvms-operator.clusterserviceversion.yaml   
           make bundle-build bundle-push catalog catalog-build catalog-push
       - name: run build-image script
         env:
@@ -79,10 +83,14 @@ jobs:
           make build docker-build docker-push rename-csv bundle-base
           yq -i '
           .spec.relatedImages[0].image = strenv(IMG) |
-          .spec.relatedImages[0].name = "lvms-operator |
+          .spec.relatedImages[0].name = "lvms-operator" |
           .spec.relatedImages[1].image = strenv(LVM_MUST_GATHER) |
-          .spec.relatedImages[1].name = "lvms-must-gather"
+          .spec.relatedImages[1].name = "lvms-must-gather" |
+          .metadata.annotations.containerImage = strenv(IMG) |
+          .metadata.annotations.repository = "https://github.com/dsedg/lvm-operator" |
+          .spec.links[0].url = "https://github.com/dsedg/lvm-operator" |
+          .spec.maintainers[0].name = "dsedg" |
+          .spec.maintainers[0].email = "dsedg@users.noreply.github.com" |
+          .spec.provider.name = "dsedg"
           ' bundle/manifests/lvms-operator.clusterserviceversion.yaml           
-          sed -i "s|quay.io/lvms_dev/lvms-operator:.*\$|$IMG|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
-          sed -i "s|quay.io/lvms_dev/lvms-must-gather:.*\$|$LVM_MUST_GATHER|g" bundle/manifests/lvms-operator.clusterserviceversion.yaml
           make bundle-build bundle-push catalog catalog-build catalog-push
