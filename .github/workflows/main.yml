@@ -54,8 +54,12 @@ jobs:
           REGISTRY_NAMESPACE: ${{ github.repository_owner }}"/lvms_dev"
           IMAGE_TAG: '4.20'
         run: |
-          IMAGE_REPO=$IMAGE_REGISTRY/$REGISTRY_NAMESPACE/lvms-operator
-          IMG=$IMAGE_REPO:$IMAGE_TAG
+          echo lvms-operator.clusterserviceversion.yaml
+          export IMAGE_REPO=$IMAGE_REGISTRY/$REGISTRY_NAMESPACE/lvms-operator
+          echo $IMAGE_REPO
+          echo $IMAGE_TAG
+          export IMG=$IMAGE_REPO:$IMAGE_TAG
+          echo $IMG
           MUST_GATHER_IMG=$IMAGE_REGISTRY/$REGISTRY_NAMESPACE/lvms-must-gather:$IMAGE_TAG
           make build docker-build docker-push rename-csv bundle-base
           yq -i '
